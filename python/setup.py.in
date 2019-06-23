@@ -1,9 +1,20 @@
 from setuptools import setup
-from distutils import sysconfig_get_python_lib
 import os.path as pth
 import sys
 
-site_packages_relative = pth.relpath(sysconfig_get_python_lib(), sys.prefix)
+site_packages_relative: str = None
+try:
+      from distutils import sysconfig_get_python_lib
+      site_packages_relative = pth.relpath(sysconfig_get_python_lib(), sys.prefix)
+except:
+      pass
+if site_packages_relative is None:
+
+      try:
+            from distutils.sysconfig import get_python_lib
+            site_packages_relative = pth.relpath(get_python_lib(), sys.prefix)
+      except:
+            pass
 
 setup(name='gtsam',
       version='${GTSAM_VERSION_STRING}',
