@@ -1,4 +1,9 @@
 from setuptools import setup
+from distutils import sysconfig_get_python_lib
+import os.path as pth
+import sys
+
+site_packages_relative = pth.relpath(sysconfig_get_python_lib(), sys.prefix)
 
 setup(name='gtsam',
       version='${GTSAM_VERSION_STRING}',
@@ -11,5 +16,5 @@ setup(name='gtsam',
       package_dir={ '': '${CMAKE_CURRENT_SOURCE_DIR}' },
       packages=['gtsam', 'gtsam_utils', 'gtsam_examples', 'gtsam_tests'],
       #package_data={'gtsam' : ['_libgtsam_python.so']},  # location of .so file is relative to package_dir
-      data_files=[('${PY_INSTALL_FOLDER}/', ['gtsam/_gtsampy.so'])],  # location of .so file relative to setup.py
+      data_files=[(site_packages_relative + '/gtsam', ['gtsam/_gtsampy.so'])],  # location of .so file relative to setup.py
      )
